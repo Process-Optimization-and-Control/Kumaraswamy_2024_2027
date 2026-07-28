@@ -1,4 +1,11 @@
+Note: 
+- This repository is a copy of the following GitHub repository, which contains Ane's code files for her master's thesis.
+- https://github.com/anelycke/Master-Thesis#master-thesis
+- This copy is maintained as a long-term backup to help ensure the code remains accessible.
+- This repository also a pdf copy of her master thesis
+
 # Master-Thesis
+
 In this repository, code files developed for this master thesis has been attached. The work builds on a code framework developed by Archana Kumaraswamy. 
 
 
