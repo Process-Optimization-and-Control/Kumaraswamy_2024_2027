@@ -1,8 +1,3 @@
-var fullRModule = ledaModules.FULLRESULTS();
-var caseID = "fdd84235-e7a2-4651-b946-d45cd4deb638";  
-
-//////// Exctracting results //////////
-
-fullRModule.setUuid(caseID);
-fullRModule.trendLoggersToSvFile("/home/archanak/projects/00 Code Templates/2027_FOCAPO_CPC/model_mismatch/case_final/full_lf_output.csv");
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:a4a061f22daa710292505bc9a6af10f3fad1a78869ea2c3f412755e1dd4648d8
+size 312

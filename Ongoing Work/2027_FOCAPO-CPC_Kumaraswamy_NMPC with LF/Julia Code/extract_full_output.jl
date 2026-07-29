@@ -1,21 +1,3 @@
-####################################################
-# EXTRACT ALL LOGGER RESULTS TO A CSV FILE   
-####################################################
-full_output_csv_path = joinpath(case_dir, "full_lf_output.csv")
-
-js = """
-var fullRModule = ledaModules.FULLRESULTS();
-var caseID = "$lf_case_id";  
-
-//////// Exctracting results //////////
-
-fullRModule.setUuid(caseID);
-fullRModule.trendLoggersToSvFile("$full_output_csv_path");
-
-"""
-
-softsh = resolve_softsh_path()
-script = joinpath(@__DIR__, "ledaflow_extract.js")
-write(script, js)
-logfile = joinpath(case_dir, "leda_extract.log")
-run(pipeline(`$softsh $script`, stdout=logfile, stderr=logfile, append=true))
+version https://git-lfs.github.com/spec/v1
+oid sha256:5972c44b2f3b58a5c103d2f01116730a38594755b3f38008c983bd7e172d019d
+size 664
