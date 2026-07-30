@@ -1,0 +1,7 @@
+# NPC Workshop 2026
+
+This folder contains code, results, and figures submitted for the Nordic Process Control Workshop 2026. Here we build PID control frameworks in Julia and implement the calculated outputs in LedaFlow. LedaFlow models a $CO_2$ pipeline-injection network with 4 choke valves and a pump. Controllers manipulate the choke valves and pump speed. 
+
+LedaFlow is triggered to run using javascript at user-defined intervals. A number of control schemes are built and tested here. They can be found in the files: "ctrl_scheme_xx.jl". A folder dedicated to each case contains figures with closed-loop simulation results. The files "plot_lf_results_casexx.ipynb" and "plot_lf_results_casexx.jl" contain code for generating the results. "case_xx_trends.csv" contains a tabulated format of the results from LedaFlow. 
+
+Additionally, a step-test is carried out in LedaFlow for the pump speed and the choke valve. The results for these step-tests can be found in "case_speed_step_trends.csv" and "case_valve_step_trends.csv". These results are used to fit a first-order-plus-dead-time (FOPDT) model and calculate tuning parameters using the SIMC tuning rules. These results can be found in "simc_tuning_calc.ipynb". 
