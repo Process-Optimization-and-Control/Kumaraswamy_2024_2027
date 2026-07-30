@@ -88,4 +88,3 @@ This folder also includes the step tests used for model identification. A step t
 | Pump speed → mainline pressure at 500 m | 0.0702 | 1040 | 1.0 |
 | Pump speed → mainline flow at 19500 m | 0.124 | 62.0 | 37.0 |
 
-Note that the choke-to-wellhead-flow response is faster than the logging interval, so the fit falls back to $\tau_1$ = 0.1 s (`simc_calc` prints a `tau_1 <= 0` warning for this loop). The consequence is that $K_c$ for the well flow controllers is very small and $\tau_I$ is very short, which leaves those loops effectively integral-only — the integral gain $K_c/\tau_I = 1/\left(k(\tau_c + \theta)\right)$ is unaffected by the fallback, but there is little proportional action to damp them.
