@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:522c67f991c6d9f71c2bfa2547626aba4e02268bae60857bc2c9dc1e3f749ca7
-size 624
+####################################################
+# LOCATE THE LEDAFLOW SOFTSHELL EXECUTABLE
+#
+# softsh.exe is the LedaFlow command-line shell; every interaction with the simulator goes through
+# it by handing it a generated JavaScript file. The code runs from WSL as well as native Windows,
+# so both mount points are checked.
+####################################################
+function resolve_softsh_path()
+    if haskey(ENV, "LEDAFLOW_SOFTSH")
+        softsh_env = ENV["LEDAFLOW_SOFTSH"]
+        isfile(softsh_env) && return softsh_env
+        error("LEDAFLOW_SOFTSH is set but file was not found: $(softsh_env)")
+    end
+
+    candidates = Sys.iswindows() ?
+        ["C:/Program Files/Kongsberg/LedaFlow Engineering v2.11.271.018/softsh.exe"] :
+        ["/mnt/c/Program Files/Kongsberg/LedaFlow Engineering v2.11.271.018/softsh.exe"]
+
+    for p in candidates
+        isfile(p) && return p
+    end
+
+    error("Could not find LedaFlow softsh.exe. Set LEDAFLOW_SOFTSH to the full executable path.")
+end
