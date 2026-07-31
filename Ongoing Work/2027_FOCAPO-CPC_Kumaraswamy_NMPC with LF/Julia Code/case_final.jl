@@ -328,7 +328,7 @@ function special_constraints_fn_dynamic(model, sim_t)
     # OBJECTIVE FUNCTION TO MPC
     ##############################
     @objective(model, Min,
-    100*sum((1.0 - model[:choke_vlv_op][k, t]) for k in choke_vlv_idx for t=1:T_mpc) # Penalty on throttling: drives the chokes towards fully open so the pump, not the valves, takes the pressure drop
+    100*sum((1.0 - model[:choke_vlv_op][k, t]) for k in choke_vlv_idx for t=1:T_mpc) # Penalty on throttling: drives the chokes towards fully open 
     + 5/3*sum((model[:w_in_corrected][51, d, t] - well_1_flow_sp_mpc[t])^2 for d=2:D for t=1:T_mpc) # Well 1 Flow Rate Setpoint
     + 20/3*sum((model[:w_in_corrected][53, d, t] - well_2_flow_sp_mpc[t])^2 for d=2:D for t=1:T_mpc) # Well 2 Flow Rate Setpoint
     + 80/3*sum((model[:w_in_corrected][64, d, t] - well_3_flow_sp_mpc[t])^2 for d=2:D for t=1:T_mpc) # Well 3 Flow Rate Setpoint
