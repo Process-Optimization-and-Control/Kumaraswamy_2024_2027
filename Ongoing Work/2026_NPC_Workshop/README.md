@@ -65,6 +65,10 @@ Each case is run with a time step of $dt$ = 30 s. Note that the controller clock
 
 - **Case B — staggered well tuning** (`nt` = 20000 s). Identical to Case D in every respect — same setpoint schedule, same override layers, same override setpoints, same pump tuning — except that the three well flow controllers are given different $\tau_c$ values (200 / 120 / 90 s). Because the wells share the mainline header, giving all three loops the same speed in Case D makes them respond to a common disturbance at the same rate and fight each other through the header. Separating them in speed is intended to break that interaction.
 
+- Note: Case B did not complete running to its full simulation time (20000s)
+- VS Code crashed around 18000s (Possibly due to too many windows open..)
+- However, 18000s was sufficient to analyse the results
+
 - **Case C — isolated high-BHP override activation** (`nt` = 7200 s). Tuning is identical to Case D, but the scenario is deliberately minimal: the pump pressure and all well flow setpoints are held at nominal, so there is no slow pressure ramp and the run stays short. The event is instead a step in well 4's BHP *override* setpoint, from 248 to 243 bar at $t$ = 500 s, dropping it below the natural BHP so the min-select takes the choke on its own. This isolates the override handover from every other transient.
 
 - **Case D — reference override scheme** (`nt` = 20000 s). The full scheme with both override layers and a uniform well tuning of $\tau_c$ = 120 s. The setpoint schedule moves one setpoint at a time and holds each phase long enough to settle:
