@@ -8,9 +8,6 @@
 # It is a feasibility problem, not an optimisation: the inputs are fixed and the objective is a
 # constant, so Ipopt only has to find a consistent operating point.
 ####################################################
-using JuMP, Ipopt
-using Statistics
-using NamedArrays
 
 function ss_model_build_solve()
 
