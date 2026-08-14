@@ -7,7 +7,7 @@
 # collocation points D and the collocation derivative matrix Adot are set in generic_param.jl.
 # NMPC Objective:
 # 1. Maximise well flow rates. There is no setpoint here: each well flow enters the objective as a
-#    negative linear term, weighted 1, 10, 80 and 800 for wells 1-4, so the wells compete for
+#    negative linear term, so the wells compete for
 #    throughput and the network constraints decide the split
 # 2. Minimise pump work
 # 3. Soft Constraints - Pipeline pressure, pipeline rate of change, and choke valve cavitation index
@@ -211,24 +211,6 @@ cavitation_min = 1.7
 pipe_pressure_roc = 0.005
 
 ##############################
-# MPC SETPOINTS
-##############################
-# The setpoint trajectory has to cover the whole simulation plus one further prediction horizon,
-# because the MPC at the last sample still looks NP seconds ahead.
-n_samples_setpoint = length(DT:DT:(NT+NP)) + 1
-
-# FLOW SETPOINTS
-well_1_flow_sp = fill(125, n_samples_setpoint, 1)
-well_2_flow_sp = fill(125, n_samples_setpoint, 1)
-well_3_flow_sp = fill(125, n_samples_setpoint, 1)
-well_4_flow_sp = fill(125, n_samples_setpoint, 1)
-
-well_4_flow_sp[25:end] .= 130
-well_3_flow_sp[25:end] .= 130
-well_2_flow_sp[25:end] .= 130
-well_1_flow_sp[25:end] .= 130
-
-##############################
 # Initial Guess for Steady State Model
 ##############################
 # One scalar per variable name; model_ss.jl uses it as the `start` value for every element of
@@ -277,10 +259,10 @@ function special_constraints_fn_dynamic(model, sim_t)
     # finite element, which is where the element's solution is collocated with the true trajectory.
     @objective(model, Min,
     sum(100*model[:pump_work][1, D, t] for t=1:T_mpc) # Pump Work Penalty
-    - 1*sum(model[:w_in][51, D, t] for t=1:T_mpc) # Well Flow Rate Setpoint
-    - 10*sum(model[:w_in][53, D, t] for t=1:T_mpc) # Well Flow Rate Setpoint
-    - 80*sum(model[:w_in][64, D, t] for t=1:T_mpc) # Well Flow Rate Setpoint
-    - 800*sum(model[:w_in][66, D, t] for t=1:T_mpc) # Well Flow Rate Setpoint
+    - 5*sum(model[:w_out][51, D, t] for t=1:T_mpc) # Maximize CO2 Injection Rate (Well 1)
+    - 20*sum(model[:w_out][53, D, t] for t=1:T_mpc) # Maximize CO2 Injection Rate (Well 2)
+    - 80*sum(model[:w_out][64, D, t] for t=1:T_mpc) # Maximize CO2 Injection Rate (Well 3)
+    - 200*sum(model[:w_out][66, D, t] for t=1:T_mpc) # Maximize CO2 Injection Rate (Well 4)
     + 1500*sum(model[:pipe_pressure_slack][k, t] for k in pressure_con_idx for t=1:T_mpc)    # Pipe Pressure CV Constraint
     + 1500*sum(model[:pipe_pressure_surplus][k, t] for k in pressure_con_idx for t=1:T_mpc)  # Pipe Pressure CV Constraint
     + 500*sum(model[:pipe_pressure_roc_slack][k, t] for k in pressure_con_idx for t=1:T_mpc)    # Pipe Pressure ROC Constraint (incl. t=1 vs. p_node_prev)

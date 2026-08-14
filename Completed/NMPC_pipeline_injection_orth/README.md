@@ -1,13 +1,15 @@
 # NMPC for a CO₂ Pipeline-Injection Network — Orthogonal Collocation
 
 This repository reproduces the case study of the **IFAC 2026 conference paper** on nonlinear MPC
-for a CO₂ pipeline-injection network. The plant model, the network, all physical parameters, all
-tuning weights and all four case definitions are the same as in the paper.
+for a CO₂ pipeline-injection network. The plant model, the network, all physical parameters, and all four case definitions are the same as in the paper.
 
 **The one modelling difference is the time discretisation: the dynamics here are discretised by
 orthogonal collocation on finite elements instead of trapezoidal integration.** Everything
 downstream of that — the objective functions, the constraint set, the closed-loop driver, the
 plotting — is unchanged.
+
+**Note: For throughput maximisation cases, w_out from the wellbores are chosen as the variable for maximization. 
+This is the flow directly being injected into the reservoir and essentially, the flow we seek to maximize. Maximizing wellhead flow rates would allow the controller to unpack inventory in the wellbores. **
 
 ## Orthogonal Collocation Implementation: 
 
