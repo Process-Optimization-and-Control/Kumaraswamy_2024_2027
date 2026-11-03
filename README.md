@@ -9,3 +9,8 @@ Each project directory typically contains the code used for simulations as well 
 
 This repository serves both as a record of the research conducted during the PhD and as a collection of reproducible computational studies associated with the published work.
 
+## GitHub workflow demo
+
+The [Github Repo Demo](Github%20Repo%20Demo/) is a small, self-contained Julia
+optimization example for learning reproducible GitHub workflows, code review,
+testing, GitHub Actions, and responsible use of Copilot in research software.
