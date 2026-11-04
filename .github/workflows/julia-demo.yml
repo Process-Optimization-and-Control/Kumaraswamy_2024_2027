@@ -1,26 +1,38 @@
 name: Julia demo tests
 
 on:
-  push:
-    paths:
-      - "Github Repo Demo/**"
-      - ".github/workflows/julia-demo.yml"
+  # Every pull request that touches the demo gets a ✅ or ❌ next to it.
   pull_request:
     paths:
       - "Github Repo Demo/**"
       - ".github/workflows/julia-demo.yml"
+  # Re-check main after a PR is merged.
+  push:
+    branches: [main]
+    paths:
+      - "Github Repo Demo/**"
+      - ".github/workflows/julia-demo.yml"
+  # Adds a "Run workflow" button on the Actions tab, so no terminal is needed.
+  workflow_dispatch:
 
 jobs:
   test:
+    name: Julia ${{ matrix.julia-version }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Github Repo Demo
+    strategy:
+      fail-fast: false
+      matrix:
+        # Oldest supported (LTS) and newest release: catches version breakage.
+        julia-version: ["1.10", "1"]
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
         with:
-          version: "1.11"
+          version: ${{ matrix.julia-version }}
       - uses: julia-actions/cache@v2
-      - run: julia --project=. -e 'using Pkg; Pkg.instantiate()'
-      - run: julia --project=. -e 'using Pkg; Pkg.test()'
+      - uses: julia-actions/julia-buildpkg@v1
+        with:
+          project: Github Repo Demo
+      - uses: julia-actions/julia-runtest@v1
+        with:
+          project: Github Repo Demo

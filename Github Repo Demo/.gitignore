@@ -1,0 +1,3 @@
+# Julia packages should not commit the Manifest: it pins one Julia version,
+# which breaks CI when it runs a different one.
+Manifest.toml

@@ -1,14 +1,12 @@
 ## Summary
 
-Describe the research or documentation change.
+What does this change and why?
 
-## Validation
+Closes #<!-- issue number: merging this PR will close that issue automatically -->
 
-- [ ] I ran `julia --project="Github Repo Demo" -e 'using Pkg; Pkg.test()'`.
-- [ ] I added or updated tests for changed behavior.
-- [ ] I checked units, assumptions, and solver status.
-- [ ] I updated documentation if the workflow or model changed.
+## Checklist
 
-## Reproducibility
-
-List relevant Julia and package versions, data sources, and commands.
+- [ ] The automated test checks below are green.
+- [ ] I added or updated a test for changed behaviour.
+- [ ] I checked units and assumptions.
+- [ ] I updated the README if the workflow or model changed.

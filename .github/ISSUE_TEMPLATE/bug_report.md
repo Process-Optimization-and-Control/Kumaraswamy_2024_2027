@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducibility, documentation, or code problem
+about: Report a wrong result, crash, or documentation problem
 title: "[Bug] "
 labels: bug
 assignees: ""
@@ -8,17 +8,17 @@ assignees: ""
 
 ## Summary
 
-Describe the problem clearly.
+Describe the problem in one or two sentences.
 
-## Reproduction
+## How to reproduce
 
-List the command, Julia version, and smallest example that reproduces it.
+The smallest code snippet that shows it, plus your Julia version.
 
-## Expected and actual behavior
+```julia
+
+```
+
+## Expected vs actual
 
 - Expected:
 - Actual:
-
-## Research context
-
-If relevant, explain the model assumption, units, or result that appears wrong.

@@ -1,46 +1,51 @@
+"""
+A deliberately tiny process model used to practise the GitHub workflow
+(issues → branches → pull requests → automated tests).
+
+Model: a gravity-drained tank with inflow `q_in` and outflow `k * sqrt(h)`
+(Torricelli's law):
+
+    A * dh/dt = q_in - k * sqrt(h)
+
+Units are SI throughout: h [m], A [m²], q_in [m³/s], k [m^2.5/s].
+"""
 module GithubRepoDemo
 
-using HiGHS
-using JuMP
-import MathOptInterface as MOI
-
-export solve_allocation
+export steady_state_level, simulate_tank
 
 """
-    solve_allocation(demand; capacities, costs)
+    steady_state_level(q_in; k)
 
-Minimize the operating cost of supplying a process demand from several
-candidate sources. Each source has a maximum capacity and a unit cost.
+Level [m] at which outflow balances inflow: `h_ss = (q_in / k)^2`.
 """
-function solve_allocation(
-    demand::Real;
-    capacities::AbstractVector{<:Real},
-    costs::AbstractVector{<:Real},
-)
-    demand > 0 || throw(ArgumentError("demand must be positive"))
-    length(capacities) == length(costs) ||
-        throw(ArgumentError("capacities and costs must have the same length"))
-    !isempty(capacities) || throw(ArgumentError("at least one source is required"))
-    all(>=(0), capacities) || throw(ArgumentError("capacities must be non-negative"))
-    all(>=(0), costs) || throw(ArgumentError("costs must be non-negative"))
-    sum(capacities) >= demand ||
-        throw(ArgumentError("total capacity must meet the demand"))
+function steady_state_level(q_in::Real; k::Real)
+    q_in >= 0 || throw(ArgumentError("inflow q_in must be non-negative"))
+    k > 0 || throw(ArgumentError("outflow coefficient k must be positive"))
+    return (q_in / k)^2
+end
 
-    model = Model(HiGHS.Optimizer)
-    set_silent(model)
-    @variable(model, 0 <= supplied[i = 1:length(capacities)] <= capacities[i])
-    @constraint(model, sum(supplied) >= demand)
-    @objective(model, Min, sum(costs[i] * supplied[i] for i in eachindex(costs)))
-    optimize!(model)
+"""
+    simulate_tank(h0, q_in; A, k, dt = 1.0, t_end = 100.0)
 
-    termination_status(model) == MOI.OPTIMAL ||
-        error("optimization did not reach an optimal solution")
+Integrate the tank level with explicit Euler. Returns a named tuple
+`(t, h)` of vectors. The level is clipped at zero (an empty tank cannot
+drain further).
+"""
+function simulate_tank(h0::Real, q_in::Real; A::Real, k::Real,
+                       dt::Real = 1.0, t_end::Real = 100.0)
+    h0 >= 0 || throw(ArgumentError("initial level h0 must be non-negative"))
+    A > 0 || throw(ArgumentError("tank area A must be positive"))
+    dt > 0 || throw(ArgumentError("time step dt must be positive"))
+    steady_state_level(q_in; k)  # reuses the q_in and k checks
 
-    return (
-        supplied = value.(supplied),
-        total_cost = objective_value(model),
-        demand = Float64(demand),
-    )
+    t = collect(0.0:dt:t_end)
+    h = similar(t)
+    h[1] = h0
+    for n in 1:length(t)-1
+        dhdt = (q_in - k * sqrt(h[n])) / A
+        h[n+1] = max(h[n] + dt * dhdt, 0.0)
+    end
+    return (t = t, h = h)
 end
 
 end
