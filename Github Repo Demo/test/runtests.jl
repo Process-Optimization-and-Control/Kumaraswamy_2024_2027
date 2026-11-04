@@ -34,4 +34,9 @@ using GithubRepoDemo
         @test_throws ArgumentError simulate_tank(1.0, 0.02; A = 0.0, k = 0.01)
     end
 
+    @testset "simulation settles at steady state" begin
+        sim = simulate_tank(0.5, 0.02; A = 1.0, k = 0.01, dt = 1.0, t_end = 5000.0)
+        @test sim.h[end] ≈ steady_state_level(0.02; k = 0.01) rtol = 1e-3
+    end
+
 end

@@ -32,7 +32,7 @@ Integrate the tank level with explicit Euler. Returns a named tuple
 drain further).
 """
 function simulate_tank(h0::Real, q_in::Real; A::Real, k::Real,
-                       dt::Real = 1.0, t_end::Real = 100.0)
+                       dt::Real = 1.0, t_end::Real = 100.0, hmax::Real = Inf)
     h0 >= 0 || throw(ArgumentError("initial level h0 must be non-negative"))
     A > 0 || throw(ArgumentError("tank area A must be positive"))
     dt > 0 || throw(ArgumentError("time step dt must be positive"))
@@ -43,7 +43,7 @@ function simulate_tank(h0::Real, q_in::Real; A::Real, k::Real,
     h[1] = h0
     for n in 1:length(t)-1
         dhdt = (q_in - k * sqrt(h[n])) / A
-        h[n+1] = max(h[n] + dt * dhdt, 0.0)
+        h[n+1] = min(max(h[n] + dt * dhdt, 0.0), hmax)  
     end
     return (t = t, h = h)
 end
