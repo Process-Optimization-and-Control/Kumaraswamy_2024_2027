@@ -19,12 +19,12 @@ A    = 1.0    # tank cross-section [m²]
 k    = 0.01   # outflow coefficient [m^2.5/s]
 q_in = 0.02   # inflow [m³/s]
 h0   = 0.5    # initial level [m]
-
+hmax = 2.0    # maximum level [m]
 h_ss = steady_state_level(q_in; k)
 println("Steady-state level: $(h_ss) m")
 
 ##  Simulate and plot
-sim = simulate_tank(h0, q_in; A, k, dt = 1.0, t_end = 3000.0)
+sim = simulate_tank(h0, q_in; A, k, dt = 1.0, t_end = 3000.0, hmax)
 
 plot(sim.t ./ 60, sim.h; label = "level h(t)", lw = 2,
      xlabel = "time [min]", ylabel = "level [m]", title = "Gravity-drained tank")

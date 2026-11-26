@@ -34,4 +34,11 @@ using GithubRepoDemo
         @test_throws ArgumentError simulate_tank(1.0, 0.02; A = 0.0, k = 0.01)
     end
 
+    @testset "level never exceeds hmax" begin
+        # steady state would be 4 m, so a 2 m cap must bind
+        sim = simulate_tank(0.5, 0.02; A = 1.0, k = 0.01, t_end = 5000.0, hmax = 2.0)
+        @test maximum(sim.h) ≤ 2.0
+        @test sim.h[end] ≈ 2.0
+    end
+
 end
