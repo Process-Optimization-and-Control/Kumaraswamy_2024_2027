@@ -12,4 +12,5 @@ This repository serves both as a record of the research conducted during the PhD
 ## GitHub workflow demo
 
 The [Github Repo Demo](Github%20Repo%20Demo/) is a small, self-contained Julia
-example (a tank level model) for practising issues, branches and pull requests.
+example (a tank level model) for practising issues, branches, pull requests,
+and automated testing with GitHub Actions.
