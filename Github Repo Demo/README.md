@@ -15,8 +15,11 @@ Github Repo Demo/
 └── Project.toml            # package metadata; no runtime dependencies
 ```
 
-Repository-level GitHub files live in `.github/` at the repo root:
-`workflows/julia-demo.yml` (CI), `ISSUE_TEMPLATE/` and `pull_request_template.md`.
+> **Note:** the repository-level `.github/` folder (the CI workflow
+> `workflows/julia-demo.yml`, the feature-request issue template and the pull
+> request template) was removed on 2026-11-26. The exercises below that rely on
+> automated checks or templates (A steps 1, 6–7, and B–D) need it back first:
+> `git restore --source=63972a8 .github`, then commit and push.
 
 ## 1. Try the demo
 
@@ -25,8 +28,9 @@ Open `demo.jl`, put your cursor in the first cell (cells are separated by
 the VS Code plot pane. (The demo uses Plots.jl from your global Julia
 environment.)
 
-The tests in `test/runtests.jl` run automatically on GitHub whenever you
-open or update a pull request, so you don't need to run them yourself.
+Run the tests in `test/runtests.jl` from this folder with
+`julia --project=. -e 'using Pkg; Pkg.test()'`. (They no longer run
+automatically on GitHub; see the note above.)
 
 ## 2. Exercises
 
